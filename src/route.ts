@@ -1,22 +1,22 @@
 import { onLoad } from "@dcloudio/uni-app";
 import { get, isUndefined, mapValues } from "lodash-es";
 import { reactive, type UnwrapRef } from "vue";
-import type { SearchParams } from "./typings";
+import type { SearchParamsQuery, SearchParamsKeys, SearchParams } from "./typings";
 
 /**
- * 提供当前页面路由信息的响应式封装。
- * 在组合式 API 中便捷地读取并类型安全地访问当前页面的路由信息。
- *
- * @template T extends SearchParams 查询参数对象的类型。为 T 指定结构可获得更精准的类型提示。
- * @returns {{ query: T; path: string; fullPath: string }} 路由信息
+ * 获取当前页面的路由信息
+ * @template T 查询参数类型
+ * @returns 包含 query、path、fullPath 的响应式路由对象
  */
-export function useUniRoute<T extends SearchParams>() {
+export function useUniRoute<T extends SearchParamsKeys | SearchParams>() {
+  type Query = T extends SearchParamsKeys ? SearchParamsQuery<T> : T;
+
   const route = reactive<{
-    query: T;
+    query: Query;
     path: string;
     fullPath: string;
   }>({
-    query: {} as T,
+    query: {} as Query,
     path: "",
     fullPath: "",
   });
@@ -26,7 +26,7 @@ export function useUniRoute<T extends SearchParams>() {
     const page = pages[pages.length - 1] ?? null;
 
     if (!isUndefined(query)) {
-      route.query = mapValues(query, (value) => decodeURIComponent(value)) as UnwrapRef<T>;
+      route.query = mapValues(query, (value) => decodeURIComponent(value)) as UnwrapRef<Query>;
     }
 
     route.path = page?.route ?? "";

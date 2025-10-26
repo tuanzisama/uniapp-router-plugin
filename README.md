@@ -1,62 +1,70 @@
 # uniapp-router-plugin
 
-一个用于 uni-app 的轻量路由工具库，提供：
-- 更友好的导航方法封装（自动处理查询串拼接与编码）；
-- 在组合式 API 中读取当前页面的路由信息（query、path、fullPath）。
+A lightweight routing utility library for uni-app that provides:
+- Friendly navigation method wrappers (automatic query string concatenation and encoding)
+- Read current page routing information (query, path, fullPath) in Composition API
 
-[English](./README.md)
+[中文文档](./README.zh-CN.md)
 
-## 安装
+## Installation
 
 ```bash
-# 使用 pnpm
+# Using pnpm
 pnpm add uniapp-router-plugin
 
-# 或使用 npm
+# Or using npm
 npm i uniapp-router-plugin
 ```
 
-## 快速上手
+## Quick Start
 
 ```ts
 import { useUniRouter, useUniRoute } from 'uniapp-router-plugin'
 
-// 导航示例
+// Navigation example
 const router = useUniRouter()
 router.navigateTo({ url: '/pages/detail/index', query: { id: 123, from: 'home' } })
-router.back() // 返回上一页
+router.back() // Go back to previous page
 
-// 读取当前路由信息示例
-const route = useUniRoute<{ id: string; from?: string }>()
+// Read current route information example
+const route = useUniRoute<{
+  /** Page ID */
+  id: string; 
+  /** Source page */
+  from?: string
+}>() // Complete type definition
+
+const route2 = useUniRoute(['id', 'from']) // Simpler type definition
+
 console.log(route.query.id)     // "123"
-console.log(route.path)         // 如："pages/detail/index"
-console.log(route.fullPath)     // 如："/pages/detail/index?id=123&from=home"
+console.log(route.path)         // e.g.: "pages/detail/index"
+console.log(route.fullPath)     // e.g.: "/pages/detail/index?id=123&from=home"
 ```
 
-提示：`switchTab({ url })` 不支持 `query`，与 uni-app 行为一致。
+Note: `switchTab({ url })` does not support `query`, consistent with uni-app behavior.
 
-## API 概览
+## API Overview
 
-- `useUniRouter()` 返回以下方法：
-  - `navigateTo(options)` 保留当前页并跳转，可携带 query
-  - `redirectTo(options)` 关闭当前页并跳转，可携带 query
-  - `reLaunch(options)` 关闭所有页面并跳转，可携带 query
-  - `switchTab(options)` 跳转到 tabBar 页面（不支持 query）
-  - `navigateBack(options)` 返回到上一个或多个页面
-  - `back(options?)` 返回上一页（`navigateBack({ delta: 1 })` 的简化封装）
-  - `push`、`replace`、`go` 为以上方法的语义化别名
-- `useUniRoute<T>()` 返回一个响应式对象 `{ query: T, path, fullPath }`
+- `useUniRouter()` returns the following methods:
+  - `navigateTo(options)` Keep current page and navigate, can carry query
+  - `redirectTo(options)` Close current page and navigate, can carry query
+  - `reLaunch(options)` Close all pages and navigate, can carry query
+  - `switchTab(options)` Navigate to tabBar page (does not support query)
+  - `navigateBack(options)` Go back to previous page(s)
+  - `back(options?)` Go back to previous page (simplified wrapper for `navigateBack({ delta: 1 })`)
+  - `push`, `replace`, `go` are semantic aliases for the above methods
+- `useUniRoute<T>()` returns a reactive object `{ query: T, path, fullPath }`
 
-## 运行环境要求
+## Runtime Requirements
 
-来自 `peerDependencies`：
+From `peerDependencies`:
 - `@dcloudio/uni-app >= 3.0.0-alpha-3000020210521001`
 - `vue >= 3.0.0`
 
-## 许可证
+## License
 
 MIT
 
-## 相关链接
+## Related Links
 
-- 仓库与问题反馈：https://github.com/tuanzisama/uniapp-router-plugin
+- Repository & Issue Feedback: https://github.com/tuanzisama/uniapp-router-plugin

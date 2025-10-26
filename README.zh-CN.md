@@ -27,7 +27,18 @@ router.navigateTo({ url: '/pages/detail/index', query: { id: 123, from: 'home' }
 router.back() // 返回上一页
 
 // 读取当前路由信息示例
-const route = useUniRoute<{ id: string; from?: string }>()
+
+// 完整的类型定义
+const route = useUniRoute<{
+  /** 页面 ID */
+  id: string; 
+  /** 来源页面(可选) */
+  from?: string
+}>() 
+
+ // 或使用更简单的类型定义
+const route2 = useUniRoute(['id', 'from'])
+
 console.log(route.query.id)     // "123"
 console.log(route.path)         // 如："pages/detail/index"
 console.log(route.fullPath)     // 如："/pages/detail/index?id=123&from=home"

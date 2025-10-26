@@ -15,3 +15,9 @@ export interface RouterParams {
 export type SearchParams = {
   [x: string]: string;
 };
+
+export type SearchParamsKeys = string[];
+
+export type SearchParamsQuery<T extends SearchParamsKeys> = {
+  [K in T[number]]: string;
+};
