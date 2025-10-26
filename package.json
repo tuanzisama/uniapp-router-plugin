@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@dcloudio/types": "^3.4.24",
+    "@rolldown/binding-win32-x64-msvc": "1.0.0-beta.44",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^24.7.2",
     "bumpp": "^10.3.1",
